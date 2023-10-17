@@ -1,0 +1,21 @@
+# Returns the Adler-32 checksum of given bytes.
+fn pub adler32(bytes: ref ByteArray) -> Int {
+  update_adler32(1, bytes)
+}
+
+# Updates a running Adler-32 checksum with given bytes and returns the updated
+# checksum.
+#
+# This code is ported from the C code in [RFC1950 Appendix](https://www.ietf.org/rfc/rfc1950.html#section-9).
+fn pub update_adler32(checksum: Int, bytes: ref ByteArray) -> Int {
+  let s1 = checksum & 0xffff
+  let s2 = (checksum >> 16) & 0xffff
+
+  let acc = bytes.iter.reduce((s1, s2)) fn (acc, value) {
+    let s1 = (acc.0 + value) % 65521
+    let s2 = (acc.1 + s1) % 65521
+    (s1, s2)
+  }
+
+  (acc.1 << 16) + acc.0
+}

@@ -1,4 +1,4 @@
-import std.cmp.(Contains, max)
+import std.cmp (Contains, max)
 
 let SHIFT = 5
 let MASK = 0x1F
@@ -11,29 +11,26 @@ class pub BitSet {
   }
 
   fn pub static with(ints: ref Array[Int]) -> BitSet {
-    let max = ints.iter.select fn (n) { n >= 0 }.reduce(0, fn (acc, n) { max(acc, n) })
+    let max = ints.iter.select(fn (n) { n >= 0 }).reduce(0, fn (acc, n) {
+      max(acc, n)
+    })
 
     let data = Array.filled(with: 0, times: (max >> SHIFT) + 1)
 
-    ints.iter.select fn (n) { n >= 0 }.each fn (n) {
+    ints.iter.select(fn (n) { n >= 0 }).each(fn (n) {
       data.set(n >> SHIFT, (data.get(n >> SHIFT) | (1 << (n & MASK))))
-    }
+    })
 
-    BitSet { @data = data }
+    BitSet(data)
   }
 }
 
 impl Contains[Int] for BitSet {
   fn pub contains?(value: Int) -> Bool {
-    if value < 0 {
-      return false
-    }
+    if value < 0 { return false }
 
-    if @data.size < ((value >> SHIFT) + 1) {
-      return false
-    }
+    if @data.size < ((value >> SHIFT) + 1) { return false }
 
     (@data.get(value >> SHIFT) & (1 << (value & MASK))) != 0
   }
 }
-

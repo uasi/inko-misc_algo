@@ -11,11 +11,12 @@ fn pub update_adler32(checksum: Int, bytes: ref ByteArray) -> Int {
   let s1 = checksum & 0xffff
   let s2 = (checksum >> 16) & 0xffff
 
-  let acc = bytes.iter.reduce((s1, s2)) fn (acc, value) {
+  let acc = bytes.iter.reduce((s1, s2), fn (acc, value) {
     let s1 = (acc.0 + value) % 65521
     let s2 = (acc.1 + s1) % 65521
+
     (s1, s2)
-  }
+  })
 
   (acc.1 << 16) + acc.0
 }

@@ -1,9 +1,8 @@
-import std.test.Tests
-
-import misc_algo.bit_set.BitSet
+import misc_algo.bit_set (BitSet)
+import std.test (Tests)
 
 fn pub tests(t: mut Tests) {
-  t.test("BitSet.contains?") fn (t) {
+  t.test('BitSet.contains?', fn (t) {
     let bit_set = BitSet.new
 
     t.equal(bit_set.contains?(-1), false)
@@ -21,5 +20,5 @@ fn pub tests(t: mut Tests) {
     t.equal(bit_set.contains?(4), true)
     t.equal(bit_set.contains?(5), false)
     t.equal(bit_set.contains?(1000), false)
-  }
+  })
 }
